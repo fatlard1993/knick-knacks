@@ -1,0 +1,18 @@
+{
+	"overview": [
+		"Set a loaf, a book or a potion down on a table, a shelf or the floor, and it stays there."
+	],
+	"versions": {
+		"1.0.0": [
+			"Hold something in your off hand, sneak, and right-click a block with an empty main hand: it lies on top, hangs on the side, or hangs from underneath.",
+			"Vanilla goes first: an axe still strips a log and a painting still hangs. Only where nothing would happen is it set down: a candle is still placed as a candle, but a poppy stands on a table. Buckets and boats are never set down.",
+			"Up to four to a block, nudged to the nearest free corner; bottles stand, everything else lies flat.",
+			"Do it again on the same thing to pile it up, eight high.",
+			"Right-click to eat or drink it, a bite at a time where the food shows its bites, or to read a book; sneak to turn it.",
+			"Hit it to pick up the top of the pile, or sneak and hit for all of it.",
+			"Shoot a bottle and it breaks, splashing what was in it; power a rocket and it goes up; glowing things light the air, and some give off motes.",
+			"A creative player's break leaves what was on the block where it was. With Kragle, glue it down.",
+			"Vanilla clients see it all; nothing to install but the server."
+		]
+	}
+}

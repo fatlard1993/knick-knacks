@@ -1,0 +1,7 @@
+{
+	"replace": false,
+	"values": [
+		"#minecraft:boats",
+		"#minecraft:chest_boats"
+	]
+}

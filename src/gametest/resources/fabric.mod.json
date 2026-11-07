@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"id": "knick-knacks-gametest",
+	"version": "1.0.0",
+	"name": "Knick Knacks game tests",
+	"description": "Sets things down and picks them up through the server's click path.",
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-client-gametest": [
+			"justfatlard.knick_knacks.gametest.SetDownAndPickUp",
+			"justfatlard.knick_knacks.gametest.Performance"
+		]
+	},
+	"depends": {
+		"knick-knacks-justfatlard": "*",
+		"fabric-client-gametest-api-v1": "*"
+	}
+}

@@ -1,0 +1,16 @@
+{
+	"replace": false,
+	"values": [
+		"minecraft:glowstone_dust",
+		"minecraft:blaze_powder",
+		"minecraft:blaze_rod",
+		"minecraft:magma_cream",
+		"minecraft:glow_ink_sac",
+		"minecraft:glow_berries",
+		"minecraft:nether_star",
+		"minecraft:end_crystal",
+		"minecraft:experience_bottle",
+		"minecraft:dragon_breath",
+		"minecraft:prismarine_crystals"
+	]
+}
