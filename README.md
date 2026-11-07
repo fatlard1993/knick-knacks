@@ -2,6 +2,10 @@
 
 Set a loaf, a book or a potion down on a table, a shelf or the floor, and it stays there.
 
+## Screenshots
+
+![A table set with bread, books, a cookie and potions, and on the wall above it a sword, a map, an enchanted book and clocks](screenshot.png)
+
 A room is furniture and then everything on the furniture: a loaf on the counter, a book left out, a compass on the desk. Vanilla gives the furniture and none of the rest, so a table stays bare however well it is built.
 
 ## Setting Something Down
