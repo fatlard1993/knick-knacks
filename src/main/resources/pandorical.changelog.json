@@ -3,6 +3,9 @@
 		"Set a loaf, a book or a potion down on a table, a shelf or the floor, and it stays there."
 	],
 	"versions": {
+		"1.0.1": [
+			"A demo to play in PvP Dimensions' onboarding."
+		],
 		"1.0.0": [
 			"Hold something in your off hand, sneak, and right-click a block with an empty main hand: it lies on top, hangs on the side, or hangs from underneath.",
 			"Vanilla goes first: an axe still strips a log and a painting still hangs. Only where nothing would happen is it set down: a candle is still placed as a candle, but a poppy stands on a table. Buckets and boats are never set down.",
