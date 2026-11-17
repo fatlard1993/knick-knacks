@@ -32,8 +32,8 @@ Do the same on something already set down on a table, and if it is the same thin
 
 ## Using What Is Set Down
 
-- **Right-click food or drink** to eat or drink it, as if from your hand: the hunger, the effects, and the bowl or bottle left behind, which stays on the table. Not when you are full, unless it is something you can always eat.
-- **A bite at a time** where the food has pictures of being eaten, as [Let's Cook](https://github.com/fatlard1993/lets-cook)'s does: each right-click takes a bite, with crumbs off the table, and the bites show until it is gone. Anything else goes in one.
+- **Hold right-click on food or drink** to eat or drink it, as if from your hand and for as long: the hunger, the effects, and the bowl or bottle left behind, which stays on the table. Let go and it stops where it was; a click alone eats nothing. Not when you are full, unless it is something you can always eat.
+- **A portion at a time** where the food has pictures of being eaten, as [Let's Cook](https://github.com/fatlard1993/lets-cook)'s does: one portion for each picture and one to finish it, each feeding its share, with crumbs off the table, and the bites show until it is gone. Anything else is one portion.
 - **Right-click a book and quill or a written book** to read it, on the lectern's own screen. Take Book picks it up.
 
 ## Set Dressing That Does Something
@@ -47,7 +47,7 @@ Do the same on something already set down on a table, and if it is the same thin
 
 - **Sneak and right-click** with nothing to set down to turn it a sixteenth.
 - **Hit** it to pick up the top of the pile, and **sneak and hit** to pick up the whole pile. It goes back into your pack, or lands at your feet if your pack is full.
-- **Take away what it rests on** and it falls, as items, by any means: mined, blown up, pushed by a piston. Not when a creative player breaks the block, though: then it stays where it was, so a table can be rebuilt without clearing it first. Once something is under it again it is an ordinary knack.
+- **Take away what it rests on** and it falls, as items, by any means: mined, blown up, pushed by a piston. Not when a creative player breaks the block, though: then it stays where it was, so a table can be rebuilt without clearing it first. Once something is under it again it is an ordinary knack. Aboard a [Big Boats](https://github.com/fatlard1993/big-boats) ship it sails with her and comes ashore where she docks, still on its plank.
 
 ## Kragle
 

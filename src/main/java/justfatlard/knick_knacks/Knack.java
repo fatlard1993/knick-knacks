@@ -469,7 +469,10 @@ public final class Knack {
 				if (box.move(pos).intersects(probe)) return true;
 			}
 		}
-		return false;
+		// A deck at sea is no block in the world: a ship's hull held solid by Pandorical, moving
+		// under the knack, which it carries along a tick behind. Looked for a little deeper and
+		// wider, so that tick's lag is no reason to fall.
+		return !level.getEntityCollisions(null, slab(anchor, face, -0.5, 0.05, 0.3)).isEmpty();
 	}
 
 	/** A box reaching out from a face between two distances, and a half-width across it. */

@@ -69,7 +69,7 @@ public final class SetDownAndPickUp implements FabricClientGameTest {
 			setDressing(context, server, connection, origin.west(6).south(3));
 			standAt(server, connection, origin);
 			piles(context, server, connection, origin.east(2).north(2));
-			eating(server, connection, origin.west(2));
+			eating(context, server, connection, origin.west(2));
 			reading(server, connection, origin.west(2).north(2));
 			restsOnASlab(server, connection, origin.west(2).south(2));
 			picture(context, server, connection, origin.east(6));
@@ -375,35 +375,45 @@ public final class SetDownAndPickUp implements FabricClientGameTest {
 		check(ingots == 8, "the pile did not come back as eight ingots: " + ingots);
 	}
 
-	private static void eating(TestServerContext server, TestServerConnection connection, BlockPos table) {
+	private static void eating(ClientGameTestContext context, TestServerContext server, TestServerConnection connection, BlockPos table) {
 		block(server, table, Blocks.OAK_PLANKS);
 		server.runOnServer(s -> connection.getServerPlayer().getFoodData().setFoodLevel(6));
 
-		// Bread has no pictures of being eaten, so it goes in one bite.
+		// A click is not eating: two of them, let go between, leave the bread where it is.
 		hold(server, connection, new ItemStack(Items.BREAD, 1));
 		setDown(server, connection, table, 0.2, 0.2);
 		Interaction bread = server.computeOnServer(s -> handlesIn(s.overworld(), table).get(0));
-		check(rightClick(server, connection, bread, false).consumesAction(), "the bread was not eaten");
-		check(handles(server, table).isEmpty(), "the eaten bread is still on the table");
+		rightClick(server, connection, bread, false);
+		context.waitTicks(10);
+		rightClick(server, connection, bread, false);
+		context.waitTicks(10);
+		check(handles(server, table).size() == 1, "two clicks ate the bread: eating is a held click");
+
+		// Held, bread has no pictures of being eaten, so it goes in one portion, as long as eating it from the hand.
+		int took = holdUntil(context, server, connection, bread, () -> handles(server, table).isEmpty(), 60);
+		check(handles(server, table).isEmpty(), "the bread held to was not eaten");
+		check(took >= 28, "the bread was eaten in " + took + " ticks, sooner than from the hand");
 		int food = server.computeOnServer(s -> connection.getServerPlayer().getFoodData().getFoodLevel());
 		check(food == 11, "eating the bread did not feed the player: " + food);
 
-		// The cookie has two, so it shows them a bite at a time and goes on the third.
+		// The cookie has two pictures, so three portions: drawn a bite at a time, fed a share each, finished on the third.
 		hold(server, connection, new ItemStack(Items.COOKIE, 1));
 		setDown(server, connection, table, 0.8, 0.2);
 		Interaction cookie = server.computeOnServer(s -> handlesIn(s.overworld(), table).get(0));
-		rightClick(server, connection, cookie, false);
-		check(server.computeOnServer(s -> bitesShown(s.overworld(), table)).equals("bites_1"), "the first bite was not drawn");
-		rightClick(server, connection, cookie, false);
-		check(server.computeOnServer(s -> bitesShown(s.overworld(), table)).equals("bites_2"), "the second bite was not drawn");
-		rightClick(server, connection, cookie, false);
-		check(handles(server, table).isEmpty(), "the cookie was not finished on its third bite");
+		holdUntil(context, server, connection, cookie, () -> "bites_1".equals(server.computeOnServer(s -> bitesShown(s.overworld(), table))), 40);
+		check(server.computeOnServer(s -> bitesShown(s.overworld(), table)).equals("bites_1"), "the first portion was not drawn");
+		holdUntil(context, server, connection, cookie, () -> "bites_2".equals(server.computeOnServer(s -> bitesShown(s.overworld(), table))), 40);
+		check(server.computeOnServer(s -> bitesShown(s.overworld(), table)).equals("bites_2"), "the second portion was not drawn");
+		holdUntil(context, server, connection, cookie, () -> handles(server, table).isEmpty(), 40);
+		check(handles(server, table).isEmpty(), "the cookie was not finished on its third portion");
+		int fed = server.computeOnServer(s -> connection.getServerPlayer().getFoodData().getFoodLevel());
+		check(fed == food + 2, "the cookie's portions did not add up to a cookie: " + food + " to " + fed);
 
 		// A stew leaves its bowl where it stood.
 		hold(server, connection, new ItemStack(Items.MUSHROOM_STEW, 1));
 		setDown(server, connection, table, 0.2, 0.8);
 		Interaction stew = server.computeOnServer(s -> handlesIn(s.overworld(), table).get(0));
-		rightClick(server, connection, stew, false);
+		holdUntil(context, server, connection, stew, () -> server.computeOnServer(s -> showing(s.overworld(), table)).equals("minecraft:bowl"), 60);
 		String left = server.computeOnServer(s -> showing(s.overworld(), table));
 		check(left.equals("minecraft:bowl"), "the stew did not leave its bowl on the table: " + left);
 
@@ -414,18 +424,32 @@ public final class SetDownAndPickUp implements FabricClientGameTest {
 		Interaction bottle = server.computeOnServer(s -> handlesIn(s.overworld(), table).stream()
 			.filter(h -> Math.abs(h.getX() - table.getX() - 0.75) < 0.01 && Math.abs(h.getZ() - table.getZ() - 0.75) < 0.01).findFirst().orElseThrow());
 		check(server.computeOnServer(s -> bottle.getBbHeight()) == 0.5F, "the potion is not standing");
-		rightClick(server, connection, bottle, false);
+		holdUntil(context, server, connection, bottle, () -> server.computeOnServer(s -> describe(s.overworld(), bottle)).contains("glass_bottle"), 60);
+		check(server.computeOnServer(s -> describe(s.overworld(), bottle)).contains("glass_bottle"), "the potion was not drunk: " + server.computeOnServer(s -> describe(s.overworld(), bottle)));
 		check(server.computeOnServer(s -> bottle.getBbHeight()) == 0.5F, "the empty bottle is not standing");
 
-		// Not hungry, nothing is eaten.
+		// Not hungry, nothing is eaten, however long it is held.
 		server.runOnServer(s -> connection.getServerPlayer().getFoodData().setFoodLevel(20));
 		BlockPos full = table.east(2);
 		block(server, full, Blocks.OAK_PLANKS);
 		hold(server, connection, new ItemStack(Items.BREAD, 1));
 		setDown(server, connection, full, 0.5, 0.5);
 		Interaction uneaten = server.computeOnServer(s -> handlesIn(s.overworld(), full).get(0));
-		rightClick(server, connection, uneaten, false);
+		holdUntil(context, server, connection, uneaten, () -> false, 48);
 		check(!handles(server, full).isEmpty(), "bread was eaten by a full player");
+	}
+
+	/** A held right-click: one every four ticks, as a held use key sends, until it is done or the time is up. Ticks held. */
+	private static int holdUntil(ClientGameTestContext context, TestServerContext server, TestServerConnection connection,
+			Interaction handle, java.util.function.BooleanSupplier done, int most) {
+		int held = 0;
+		while (held <= most) {
+			rightClick(server, connection, handle, false);
+			if (done.getAsBoolean()) return held;
+			context.waitTicks(4);
+			held += 4;
+		}
+		return held;
 	}
 
 	private static void reading(TestServerContext server, TestServerConnection connection, BlockPos desk) {

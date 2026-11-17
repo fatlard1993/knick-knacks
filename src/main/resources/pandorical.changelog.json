@@ -3,6 +3,10 @@
 		"Set a loaf, a book or a potion down on a table, a shelf or the floor, and it stays there."
 	],
 	"versions": {
+		"1.1.0": [
+			"Things set down on a Big Boats ship stay aboard as she sails and docks, rather than falling off as items.",
+			"Food and drink set down are eaten by holding right-click, as long as from the hand, and a portion at a time where Let's Cook draws the bites, each feeding its share."
+		],
 		"1.0.1": [
 			"A demo to play in PvP Dimensions' onboarding."
 		],

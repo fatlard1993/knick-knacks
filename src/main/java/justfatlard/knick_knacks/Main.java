@@ -21,7 +21,10 @@ public class Main implements ModInitializer {
 	public void onInitialize() {
 		UseBlockCallback.EVENT.register(SetDown::onUseBlock);
 		UseItemCallback.EVENT.register(SetDown::onUseItem);
-		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> SetDown.forget(handler.getPlayer()));
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			SetDown.forget(handler.getPlayer());
+			Bites.forget(handler.getPlayer());
+		});
 
 		// Hit it to pick it up.
 		AttackEntityCallback.EVENT.register((player, level, hand, entity, hit) -> {
@@ -31,7 +34,7 @@ public class Main implements ModInitializer {
 			return Glue.allows(user, handle) && Knack.pickUp(user, server, handle) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
 		});
 
-		// Right-click it to use it: eat it, drink it, read it. Sneak to turn it, or to pile on another.
+		// Right-click it to use it: eat or drink it (held, as from the hand), read it. Sneak to turn it, or to pile on another.
 		UseEntityCallback.EVENT.register((player, level, hand, entity, hit) -> {
 			if (!(entity instanceof Interaction handle) || !Knack.isKnack(handle)) return InteractionResult.PASS;
 			if (hand != InteractionHand.MAIN_HAND) return InteractionResult.FAIL;
